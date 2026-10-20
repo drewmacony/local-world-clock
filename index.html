@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>World Clock — Local</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="World Clock home">
+        <span class="brand-mark">◷</span>
+        <span>World Clock <small>LOCAL</small></span>
+      </a>
+      <div class="top-actions">
+        <span id="sound-status" class="status-pill">Sound not enabled</span>
+        <button id="sound-enable" class="button button-quiet" type="button">Enable sound</button>
+        <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle light and dark mode" title="Toggle theme">◐</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div class="hero-heading">
+          <div>
+            <p class="eyebrow">YOUR PRIMARY TIME</p>
+            <h1 id="main-location-label">Accra, Ghana</h1>
+          </div>
+          <button class="text-button" id="open-settings" type="button">⚙ Settings</button>
+        </div>
+        <div class="main-clock-wrap">
+          <div id="main-clock" class="main-clock" aria-label="Current time">--:--:--</div>
+          <div id="main-ampm" class="ampm"></div>
+        </div>
+        <div id="main-date" class="main-date">Loading date…</div>
+        <div class="hero-footer">
+          <span class="live-dot"></span><span>Using your computer’s system time</span>
+          <span id="main-zone-badge" class="zone-badge">Africa/Accra · UTC</span>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><p class="eyebrow">AROUND THE WORLD</p><h2>World clocks</h2></div>
+          <span class="section-hint">Choose a time zone for each clock</span>
+        </div>
+        <div class="world-grid" id="world-grid">
+          <article class="world-card panel" data-clock="0">
+            <div class="world-card-top"><div><p class="card-kicker">CLOCK 01</p><h3 class="world-label">London</h3></div><button class="mini-edit" type="button" aria-label="Change clock 1 time zone">✎</button></div>
+            <div class="world-time">--:--:--</div><div class="world-meta">UTC+00:00</div>
+          </article>
+          <article class="world-card panel" data-clock="1">
+            <div class="world-card-top"><div><p class="card-kicker">CLOCK 02</p><h3 class="world-label">New York</h3></div><button class="mini-edit" type="button" aria-label="Change clock 2 time zone">✎</button></div>
+            <div class="world-time">--:--:--</div><div class="world-meta">UTC−00:00</div>
+          </article>
+          <article class="world-card panel" data-clock="2">
+            <div class="world-card-top"><div><p class="card-kicker">CLOCK 03</p><h3 class="world-label">Tokyo</h3></div><button class="mini-edit" type="button" aria-label="Change clock 3 time zone">✎</button></div>
+            <div class="world-time">--:--:--</div><div class="world-meta">UTC+00:00</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block two-column">
+        <article class="panel feature-panel">
+          <div class="feature-heading"><div class="feature-icon">♫</div><div><p class="eyebrow">ON THE HOUR</p><h2>Hourly chime</h2></div><label class="switch"><input id="chime-enabled" type="checkbox"><span></span></label></div>
+          <p class="muted">Play a short sound when the selected clock reaches the top of an hour.</p>
+          <div class="field-row"><label for="chime-source">Chime follows</label><select id="chime-source"><option value="main">Main clock</option><option value="0">World clock 01</option><option value="1">World clock 02</option><option value="2">World clock 03</option></select></div>
+          <div class="field-row"><label for="chime-volume">Volume</label><input id="chime-volume" type="range" min="0" max="1" step="0.05" value="0.65"><span id="chime-volume-value" class="range-value">65%</span></div>
+          <div class="upload-row"><div><strong id="chime-file-name">Built-in chime</strong><small>Choose an MP3 or restore the default sound.</small></div><div class="upload-actions"><label class="button button-outline" for="chime-file">Upload MP3</label><input id="chime-file" type="file" accept="audio/mpeg,audio/mp3,.mp3" hidden><button id="preview-chime" class="button button-quiet" type="button">▶ Preview</button></div></div>
+        </article>
+
+        <article class="panel feature-panel alarms-panel">
+          <div class="feature-heading"><div class="feature-icon">◷</div><div><p class="eyebrow">STAY ON SCHEDULE</p><h2>Alarms</h2></div><button id="add-alarm" class="button button-primary" type="button">＋ Add alarm</button></div>
+          <p class="muted">Create one-time or repeating alarms. Keep this page open for alarms to fire.</p>
+          <div id="alarm-list" class="alarm-list"><div class="empty-state">No alarms yet. Add one to get started.</div></div>
+        </article>
+      </section>
+
+      <section class="panel settings-panel" id="settings-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">PREFERENCES</p><h2>Clock settings</h2></div><button id="close-settings" class="icon-button" type="button" aria-label="Close settings">×</button></div>
+        <div class="settings-grid">
+          <div class="field"><label for="main-zone">Main clock time zone</label><input id="main-zone" list="timezone-list" value="Africa/Accra" autocomplete="off"><small>Use a city or IANA zone, e.g. Africa/Accra.</small></div>
+          <div class="field"><label for="time-format">Time format</label><select id="time-format"><option value="24">24-hour</option><option value="12">12-hour</option></select></div>
+          <div class="field"><label for="appearance">Appearance</label><select id="appearance"><option value="system">Follow system</option><option value="light">Light mode</option><option value="dark">Dark mode</option></select></div>
+          <div class="field"><label for="zone-0">World clock 01 time zone</label><input id="zone-0" list="timezone-list" value="Europe/London" autocomplete="off"></div>
+          <div class="field"><label for="zone-1">World clock 02 time zone</label><input id="zone-1" list="timezone-list" value="America/New_York" autocomplete="off"></div>
+          <div class="field"><label for="zone-2">World clock 03 time zone</label><input id="zone-2" list="timezone-list" value="Asia/Tokyo" autocomplete="off"></div>
+        </div>
+        <datalist id="timezone-list"></datalist>
+        <div class="settings-footer"><div><strong>Local storage</strong><p class="muted">Settings and uploaded sounds stay in this browser on this computer.</p></div><div class="upload-actions"><button id="export-settings" class="button button-outline" type="button">Export settings</button><label class="button button-outline" for="import-settings">Import settings</label><input id="import-settings" type="file" accept="application/json,.json" hidden></div></div>
+        <p id="settings-message" class="inline-message" role="status"></p>
+
+
+
+<div class="field">
+  <label for="auto-sync">Automatic time synchronization</label>
+  <label class="switch">
+    <input id="auto-sync" type="checkbox" checked>
+    <span></span>
+  </label>
+  <small id="sync-status">Using your computer's system time.</small>
+</div>
+
+<div class="field">
+  <label for="manual-date-time">Set time manually</label>
+  <input id="manual-date-time" type="datetime-local" step="1">
+  <button id="apply-manual-time" class="button button-outline"
+          type="button">Apply manual time</button>
+  <small>Changes the clock inside this application only.</small>
+</div>
+
+
+
+
+      </section>
+
+      <footer class="app-footer"><span>World Clock · runs locally in your browser</span><span>Alarms require this page to remain open and the computer awake.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="alarm-dialog" class="dialog">
+    <form id="alarm-form" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">ALARM SETUP</p><h2 id="alarm-dialog-title">Add alarm</h2></div><button id="cancel-alarm-x" class="icon-button" type="button" aria-label="Close">×</button></div>
+      <input type="hidden" id="alarm-id">
+      <div class="field"><label for="alarm-name">Alarm name</label><input id="alarm-name" maxlength="60" placeholder="e.g. Morning reminder" required></div>
+      <div class="form-grid">
+        <div class="field"><label for="alarm-time">Time</label><input id="alarm-time" type="time" required></div>
+        <div class="field"><label for="alarm-zone">Time zone</label><input id="alarm-zone" list="timezone-list" value="Africa/Accra" required autocomplete="off"></div>
+      </div>
+      <div class="field"><label for="alarm-repeat">Repeat</label><select id="alarm-repeat"><option value="once">One time</option><option value="daily">Every day</option><option value="weekly">Selected days</option></select></div>
+      <div id="alarm-date-wrap" class="field"><label for="alarm-date">Date</label><input id="alarm-date" type="date"></div>
+      <div id="weekday-wrap" class="weekday-row" hidden>
+        <label class="day-check"><input type="checkbox" value="1"> Mon</label><label class="day-check"><input type="checkbox" value="2"> Tue</label><label class="day-check"><input type="checkbox" value="3"> Wed</label><label class="day-check"><input type="checkbox" value="4"> Thu</label><label class="day-check"><input type="checkbox" value="5"> Fri</label><label class="day-check"><input type="checkbox" value="6"> Sat</label><label class="day-check"><input type="checkbox" value="0"> Sun</label>
+      </div>
+      <div class="field"><label for="alarm-snooze">Snooze duration</label><select id="alarm-snooze"><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></div>
+      <div class="field"><label for="alarm-volume">Alarm volume</label><input id="alarm-volume" type="range" min="0" max="1" step="0.05" value="0.8"></div>
+      <div class="upload-row alarm-audio-row"><div><strong id="alarm-audio-label">Use default alarm sound</strong><small>Optional: choose a custom MP3 for this alarm.</small></div><div class="upload-actions"><label class="button button-outline" for="alarm-audio-file">Upload MP3</label><input id="alarm-audio-file" type="file" accept="audio/mpeg,audio/mp3,.mp3" hidden><button id="clear-alarm-audio" class="button button-quiet" type="button">Clear</button></div></div>
+      <p id="alarm-form-error" class="error-message" role="alert"></p>
+      <div class="dialog-actions"><button id="cancel-alarm" class="button button-outline" type="button">Cancel</button><button class="button button-primary" type="submit">Save alarm</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="ring-dialog" class="dialog ring-dialog">
+    <div class="ring-icon">◷</div><p class="eyebrow">ALARM</p><h2 id="ring-title">Alarm</h2><p id="ring-subtitle" class="muted">It's time.</p>
+    <div class="ring-actions"><button id="snooze-alarm" class="button button-outline" type="button">Snooze</button><button id="dismiss-alarm" class="button button-primary" type="button">Dismiss</button></div>
+  </dialog>
+  <audio id="audio-player" preload="auto"></audio>
+  <script src="app.js"></script>
+</body>
+</html>
